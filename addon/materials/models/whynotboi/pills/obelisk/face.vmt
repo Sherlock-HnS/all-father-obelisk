@@ -1,0 +1,13 @@
+"UnlitGeneric"
+{
+    "$basetexture" "models\whynotboi\pills\obelisk\face_d"
+    "$bumpmap" "models\whynotboi\pills\obelisk\flat"
+
+    "$nodecal" "1"
+
+    "$color2" "[2 2 2]"
+    
+    "$alphatest" "1"
+
+    "$nocull" "1"
+}

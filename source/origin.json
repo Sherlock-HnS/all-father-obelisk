@@ -1,0 +1,22 @@
+{
+  "id": "3663991513",
+  "name": "all-father-obelisk",
+  "title": "[PILL PACK] ALL-FATHER & OBELISK",
+  "author": "Eddygar",
+  "status": "extracted_verified",
+  "acquisition": "existing_steam_client_installation",
+  "steamcmd_download_completed": false,
+  "source_workshop_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3663991513",
+  "source_archive_sha256": "01270688ca21d3f3a521bcd5b2fecd454bff6744ffeba369e954c33527fc8fd0",
+  "gma_header": {
+    "title": "[PILL PACK] ALL-FATHER & OBELISK",
+    "description": "{\"title\":\"[PILL PACK] ALL-FATHER & OBELISK\",\"type\":\"npc\",\"tags\":[\"fun\",\"roleplay\",\"scenic\"],\"ignore\":[]}",
+    "author": "Author Name",
+    "steam_id": "0",
+    "timestamp": 1770767399
+  },
+  "files": 85,
+  "payload_bytes": 47810516,
+  "roundtrip_verified": true,
+  "packaging_exclusions": []
+}
