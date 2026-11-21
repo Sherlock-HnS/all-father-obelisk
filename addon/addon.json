@@ -1,10 +1,9 @@
 {
-  "ignore": [],
+  "title": "[PILL PACK] ALL-FATHER & OBELISK",
+  "type": "npc",
   "tags": [
     "fun",
-    "roleplay",
-    "scenic"
+    "roleplay"
   ],
-  "title": "[PILL PACK] ALL-FATHER & OBELISK",
-  "type": "npc"
+  "ignore": []
 }
