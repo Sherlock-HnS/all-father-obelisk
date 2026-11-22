@@ -116,6 +116,7 @@ local xtimer2 = ScrW() - 477
 local ytimer2 = ScrH() - 153
 
 hook.Add("HUDPaint", "abiliconsobelisk", function()
+    if SherlockHNS then return end
     local ply = LocalPlayer()
     if not IsValid(ply) then return end
 

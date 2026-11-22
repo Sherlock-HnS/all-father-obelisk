@@ -61,13 +61,10 @@ end)
                         end
 
                         if self.animFreeze and not self.plyFrozen then
-                            ply:SetWalkSpeed(ply:GetWalkSpeed() / 2)
-                            ply:SetRunSpeed(ply:GetWalkSpeed() / 2)
+                            self:ApplyMoveSpeed()
                             self.plyFrozen = true
                         elseif not self.animFreeze and self.plyFrozen then
-                            local speed = self.formTable.moveSpeed or {}
-                            ply:SetWalkSpeed(speed.walk or 200)
-                            ply:SetRunSpeed(speed.run or speed.walk or 500)
+                            self:ApplyMoveSpeed()
                             self.plyFrozen = nil
                         end
 
@@ -229,7 +226,7 @@ end)
                         --water death
                         self.touchingWater = ply:WaterLevel() > 1
 
-                        if (self.formTable.damageFromWater and self.touchingWater) then
+                        if not SherlockHNS and self.formTable.damageFromWater and self.touchingWater then
                             if self.formTable.damageFromWater == -1 then
                                 --self:PillDie()
                                 ply:Kill()
@@ -282,7 +279,7 @@ end)
                         end
 
                         --charge
-                        if self:GetChargeTime() ~= 0 then
+                        if not SherlockHNS and self:GetChargeTime() ~= 0 then
                             if ply:OnGround() then
                                 local charge = self.formTable.charge
                                 local angs = ply:EyeAngles()
@@ -606,7 +603,16 @@ function FVJOHNNY_PILLS:RegisterPill(CFG)
         jump = function(ply, ent)
             FVJOHNNY_PILLS:PressButton(ply, ent, "Jump", CFG)
         end,
-    })
+    }, function(form)
+    -- The legacy damage branches are for Sandbox and NPCs.
+    form.hnsKillAPI = true
+    form.hnsAbilities = {
+        { id = "attack", name = "Ataque", key = IN_ATTACK, OnUse = form.attack.func },
+        { id = "mark", name = "Visão espectral", key = IN_ATTACK2, OnUse = form.attack2.func },
+        { id = "invisible", name = "Invisibilidade", key = IN_RELOAD, OnUse = form.reload },
+    }
+    form.attack, form.attack2, form.reload = nil, nil, nil
+end)
 
     FVJOHNNY_PILLS:RegisterPillsButtonPress(CFG)
     FVJOHNNY_PILLS:RegisterPillThink(CFG)
@@ -783,6 +789,15 @@ end,
             end
         end
 
+        if SherlockHNS and IsValid(entity) and entity:IsPlayer() then
+            return pk_pills.playHNSJumpscare(ply, ent, entity, 2.67, {
+                camera = "OBELISKJUMPCAMEDDY",
+                offset = 50,
+                animation = "jumpscare",
+                sound = "kill",
+            })
+        end
+
         if IsValid(entity) then
             local pill = ent:GetPuppet()
 
@@ -947,10 +962,7 @@ timer.Create("senddistance", 0.1, 0, function()
     end
 end)
 
-    ent.formTable.moveSpeed.walk = "100"
-    ent.formTable.moveSpeed.run = "650"
-    ply:SetWalkSpeed(100)
-    ply:SetRunSpeed(650)
+    pk_pills.setCostumeMoveSpeed(ent, 100, 650)
 
     timer.Simple(10, function()
     if ent.DontActivateTimer then return end
@@ -977,10 +989,7 @@ end)
     net.Start("redvignettestop")
     net.Broadcast()
 
-    ent.formTable.moveSpeed.walk = "70"
-    ent.formTable.moveSpeed.run = "580"
-    ply:SetWalkSpeed(70)
-    ply:SetRunSpeed(580)
+    pk_pills.setCostumeMoveSpeed(ent, 70, 580)
     end)
 end
 
@@ -989,8 +998,6 @@ end
             print("rage deactivated")
             timer.Remove("senddistance")
             timer.Remove("getplayerdistance")
-            ent.formTable.moveSpeed.walk = "70"
-            ent.formTable.moveSpeed.run = "580"
             rageactive = false
             cooldowiwishiknew = true
             net.Start("ragescreamabilitdisableability")
@@ -1067,6 +1074,7 @@ reload = function(ply, ent)
             util.Effect("obelisk_sprite", effectdata, true, true)
 
             ply.OnHold = true
+            pk_pills.setHNSCooldown(ent, "burrow", 10)
             timer.Create("cooldownobelisk" .. ply:SteamID64(), 10, 1, function()
                 if IsValid(ply) then
                     ply.OnHold = false
@@ -1134,4 +1142,15 @@ end,
 	
     jump=function(ply,ent)
     end
-})
+}, function(form)
+    -- The legacy damage branches are for Sandbox and NPCs.
+    form.hnsKillAPI = true
+    form.hnsAbilities = {
+        { id = "attack", name = "Ataque", key = IN_ATTACK, OnUse = form.attack.func },
+        { id = "burrow", name = "Enterrar", key = IN_RELOAD, OnUse = form.reload },
+    }
+    form.attack, form.attack2, form.reload = nil, nil, nil
+    pk_pills.bindHNSButtons(form, "ObeliskKeybind", {
+        { id = "rage", name = "Fúria", button = KEY_G, keyLabel = "G", cooldown = 60 },
+    })
+end)

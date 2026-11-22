@@ -20,6 +20,7 @@ local materialCache = {}
 
 function FVJOHNNY_PILLS:RegisterAbilitiesGUI(CFG)
     hook.Add("HUDPaint", "FVJOHNNY_PILLS_AbilitiesGUI_" .. CFG.PillName, function()
+        if SherlockHNS then return end
         local ply = LocalPlayer()
         if not IsValid(ply) then return end
         if not FVJOHNNY_PILLS:IsPlayerUsingPillName(ply, CFG.PillName) then return end

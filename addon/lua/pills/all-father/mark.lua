@@ -64,6 +64,12 @@ if SERVER then
         FVJOHNNY_PILLS.AllFather:MarkPlayer(targetPly, allFatherPly)
     end)
 
+    hook.Add("Initialize", "AllFatherHNSMark", function()
+        if not SherlockHNS then return end
+        SherlockHNS.RegisterEffect("allfather_mark", {
+            OnEnd = function(target) FVJOHNNY_PILLS.AllFather:SetMarkAllFather(target, NULL) end,
+        })
+    end)
     function FVJOHNNY_PILLS.AllFather:MarkPlayer(targetPly, allFatherPly)
         if not IsValid(allFatherPly) then return end
         if not self:IsSpectreVisionActive(allFatherPly) then return end
@@ -74,6 +80,8 @@ if SERVER then
         if targetPly:Health() <= 0 then return end
 
         local RightClickCfg = FVJOHNNY_PILLS.AllFather.CFG.RightClick
+
+        if SherlockHNS and targetPly:IsPlayer() and not SherlockHNS.ApplyEffect(targetPly, "allfather_mark", 15, allFatherPly) then return end
 
         -- Mark the player
         self:SetMarkAllFather(targetPly, allFatherPly)

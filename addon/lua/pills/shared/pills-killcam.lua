@@ -68,6 +68,11 @@ function FVJOHNNY_PILLS:DoKillAttack(attacker, attackerEnt, timeToStop, bloodTim
     local target = self:GetClosestPlayer(attacker, attackerEnt)
     if not IsValid(target) then return false end
 
+    if SherlockHNS and target:IsPlayer() then
+        return pk_pills.playHNSJumpscare(attacker, attackerEnt, target, timeToStop, {
+            camera = killCamHookName, offset = 55,
+        })
+    end
     local pill = attackerEnt:GetPuppet()
 
     for _, t in pairs(bloodTimers or {}) do

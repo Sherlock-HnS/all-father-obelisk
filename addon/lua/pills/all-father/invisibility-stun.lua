@@ -10,6 +10,12 @@ function FVJOHNNY_PILLS.AllFather:IsStunned(ply)
 end
 
 if SERVER then
+    hook.Add("Initialize", "AllFatherHNSStun", function()
+        if not SherlockHNS then return end
+        SherlockHNS.RegisterEffect("allfather_stun", {
+            OnEnd = function(ply) ply:SetNWFloat("AllFatherStunEndTime", 0) end,
+        })
+    end)
     function FVJOHNNY_PILLS.AllFather:StunNearbyPlayers(allFatherPly)
         local ReloadCfg = FVJOHNNY_PILLS.AllFather.CFG.Reload
         local stunPos = allFatherPly:GetPos()
@@ -17,7 +23,7 @@ if SERVER then
 
         for _, ent in ipairs(nearbyPlayers) do
             if ent:IsPlayer() and ent ~= allFatherPly and ent:Health() > 0 then
-                -- Mark player as stunned
+                if SherlockHNS and not SherlockHNS.ApplyEffect(ent, "allfather_stun", ReloadCfg.stunDuration, allFatherPly) then continue end
                 ent:SetNWFloat("AllFatherStunEndTime", CurTime() + ReloadCfg.stunDuration)
                 ent:ChatPrint("You have been stunned by the All-Father!")
                 allFatherPly:ChatPrint("You have stunned " .. ent:Nick() .. "!")

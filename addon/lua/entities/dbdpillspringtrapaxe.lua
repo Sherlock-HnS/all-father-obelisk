@@ -42,6 +42,11 @@ function ENT:PhysicsCollide(colData)
 end
 
 function ENT:HitEnt(entity)
+    if SherlockHNS and IsValid(entity) and entity:IsPlayer() then
+        local owner = self:GetCreator()
+        if IsValid(owner) and SherlockHNS.Kill(entity, owner, { reason = "axe", inflictor = self }) then self:Remove() end
+        return
+    end
     if IsValid(entity) and entity:Health() then
         local effectdata = EffectData()
 

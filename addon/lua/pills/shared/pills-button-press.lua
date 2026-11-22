@@ -84,6 +84,11 @@ function FVJOHNNY_PILLS:SetNextAllowedTime(ply, button, CFG, customCooldown)
     ply.FVJOHNNY_PILLS_BUTTON_PRESSED[button] = true
 
     local cooldown = customCooldown or CFG[button].cooldown or 0
+    if SherlockHNS then
+        local id = ({ LeftClick = "attack", RightClick = "mark", Reload = "invisible" })[button]
+        if id and cooldown > 0 then SherlockHNS.Ability.SetCooldown(ply, id, cooldown) end
+        return
+    end
     if cooldown <= 0 then return end
 
     ply:SetNWFloat("FVJOHNNY_PILLS_BUTTON_NEXT_ALLOWED_TIME_" .. button, CurTime() + cooldown)
