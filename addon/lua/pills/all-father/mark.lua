@@ -78,6 +78,7 @@ if SERVER then
         if self:IsMarked(targetPly) then return end
         if targetPly == allFatherPly then return end
         if targetPly:Health() <= 0 then return end
+        if SherlockHNS and targetPly:IsPlayer() and not SherlockHNS.CanTarget(targetPly, allFatherPly) then return end
 
         local RightClickCfg = FVJOHNNY_PILLS.AllFather.CFG.RightClick
 
