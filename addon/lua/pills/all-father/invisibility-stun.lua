@@ -23,6 +23,7 @@ if SERVER then
 
         for _, ent in ipairs(nearbyPlayers) do
             if ent:IsPlayer() and ent ~= allFatherPly and ent:Health() > 0 then
+                if SherlockHNS and not SherlockHNS.CanTarget(ent, allFatherPly) then continue end
                 if SherlockHNS and not SherlockHNS.ApplyEffect(ent, "allfather_stun", ReloadCfg.stunDuration, allFatherPly) then continue end
                 ent:SetNWFloat("AllFatherStunEndTime", CurTime() + ReloadCfg.stunDuration)
                 ent:ChatPrint("You have been stunned by the All-Father!")
